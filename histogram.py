@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib2.pyplot as plt
 showRGB = False
 shouBrightNess = True
 src = Image.open('/tmp/a.png')

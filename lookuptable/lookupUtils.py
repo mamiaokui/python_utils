@@ -61,6 +61,51 @@ def mix(a, b, f):
     return ret;
 
 
+def apply_64_lookup(image_path, lookup_path):
+    image = Image.open(image_path)
+    lookup = Image.open(lookup_path)
+    image2 = np.array(image)
+    lookup2 = np.array(lookup)
+    result = np.ndarray(shape=(image2.shape[0], image2.shape[1], 3), dtype=np.uint8)
+    for h in range (0, image2.shape[0]):
+        for w in range(0, image2.shape[1]):
+            print "***begin***"
+            color = image2[h][w]
+            color255 = color
+            print color255
+            # print "*************begin***************"
+            # print "origin color", color
+            color = color / 255.0
+            blue = color[2] * 15.0
+
+            quad1 = np.ndarray(shape=2, dtype=np.uint8)
+            quad1[1] = math.floor(math.floor(blue) / 4.0)
+            quad1[0] = math.floor(blue) - (quad1[1] * 4.0)
+
+            quad2 = np.ndarray(shape=2, dtype=np.uint8)
+            quad2[1] = math.floor(math.ceil(blue) / 4.0)
+            quad2[0] = math.ceil(blue) - (quad2[1] * 4.0)
+
+            pos1 = np.ndarray(shape=2, dtype=np.float32)
+            pos1[0] = quad1[0] * 0.25 + 0.5/64.0 + ((0.25 - 1.0/64.0) * color[0])
+            pos1[1] = quad1[1] * 0.25 + 0.5/64.0 + ((0.25 - 1.0/64.0) * color[1])
+
+            pos2 = np.ndarray(shape=2, dtype=np.float32)
+            pos2[0] = quad2[0] * 0.25 + 0.5 / 64.0 + ((0.25 - 1.0 / 64.0) * color[0])
+            pos2[1] = quad2[1] * 0.25 + 0.5 / 64.0 + ((0.25 - 1.0 / 64.0) * color[1])
+            print "index", w, h, int(pos1[1]*64), int(pos1[0]*64), int(pos2[1]*64),int(pos2[0]*64)
+            color1 = lookup2[int(pos1[1]*64)][int(pos1[0]*64)]
+            color2 = lookup2[int(pos2[1]*64)][int(pos2[0]*64)]
+
+            # print "cal color", pos1*512, pos2*512, color1, color2, blue - math.floor(blue)
+            result[h][w] =mix(color1, color2, blue - math.floor(blue))
+            print result[h][w]
+            print "****end****"
+            # print result[h][w]
+            # print "*************end*****************"
+            # print "\n"
+            # print "\n"
+
 def apply_512_lookup(image_path, lookup_path):
     image = Image.open(image_path)
     lookup = Image.open(lookup_path)
