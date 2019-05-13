@@ -1,6 +1,7 @@
 import cv2
 import sys
 import numpy as np
+
 def foo():
     for i in range(1, len(sys.argv)):
         img = cv2.imread(sys.argv[i])
@@ -32,6 +33,13 @@ def foo():
 
         img2 = img[ (y - 10):(y + h + 10),(x - 10):(x + w + 10)]
         print sys.argv[1] + "/"+ sys.argv[i].split("/")[-1]
+        h, w, depth = img2.shape
+        if w <= 0:
+            continue
+        if h <= 0:
+            continue
+        print(img2.shape)
+        img2 = cv2.resize(img2, (64, 64), interpolation=cv2.INTER_AREA)
         cv2.imwrite(sys.argv[1] + "/" + sys.argv[i].split("/")[-1], img2)
 
         if 2 > 11:
