@@ -157,8 +157,8 @@ def apply_512_lookup(image_path, lookup_path):
 
 
 if __name__ == "__main__":
-    generate_default(64)
-#   generate_default(512)
+#    generate_default(64)
+   generate_default(512)
 #   apply_512_lookup("512.bmp", "512_lookup.png")
 #   apply_512_lookup("64.bmp", "512_lookup.png")
 
