@@ -2,7 +2,7 @@ import struct
 
 content = ""
 arr = []
-base = 540
+base = 480
 with open("/tmp/log.txt") as inf:
     content = inf.read()
     arr = content.split()
