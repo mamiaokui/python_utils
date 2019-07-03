@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     for line in lines:
         result = line.split()
-        print(result)
+        #print(result)
         if validate(result):
             points.append(map(float, result))
     max_value = -1
@@ -81,12 +81,12 @@ if __name__ == "__main__":
     od = collections.OrderedDict(sorted(format_point.items()))
     with open(sys.argv[2], "w+") as f:
         for k, v in od.iteritems():
-            for i in range (0, len(v)/2):
-                temp = v[i]
-                v[i] = v[i+4]
-                v[i+4] = temp
+            # for i in range (0, len(v)/2):
+            #     temp = v[i]
+            #     v[i] = v[i+4]
+            #     v[i+4] = temp
             str_convert = ' '.join(str(e) for e in v)
-            print str_convert
+            print str_convert,
             f.write(str_convert + "\n")
 
 
