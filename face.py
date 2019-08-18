@@ -37,7 +37,7 @@ def generate_face(arr, dest):
         if not os.path.exists(path):
             os.mkdir(path)
         path = os.path.join(dest, arr[i].split("/")[-1])
-        print path
+        print(path)
 
         h, w, depth = img2.shape
         if w <= 0:
