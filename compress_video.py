@@ -2,6 +2,7 @@ import sys
 import time
 import os
 import datetime
+import shutil
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -26,12 +27,15 @@ def process():
     input_dir = sys.argv[1]
     output_dir = sys.argv[2]
     files = list_all_files(input_dir)
+    print("start process")
 
     for file_name in files:
+        print("process " + file_name)
         try:
             file_name_base= os.path.basename(file_name)
             file_name_base = file_name_base.split(".")[0]
             time_value = int(file_name_base.split("_")[1])
+            #time_value += 8*60*60
             print(file_name_base)
             timeArray = time.localtime(time_value)
             file_name_full = time.strftime("%Y_%m_%d_%H_%M_%S", timeArray)
@@ -40,11 +44,15 @@ def process():
             file_name_hour = os.path.join(output_dir, file_name_hour)
             create_dirs(file_name_hour)
             output_path = os.path.join(file_name_hour, file_name_full)
-            command = "ffmpeg -y -i %s -vf scale=320:-1 %s" %(file_name, output_path)
+            tmp_output_path = os.path.join("/tmp", file_name_full)
+            command = "ffmpeg -y -i %s -vf scale=480:-1 -strict -2 %s" %(file_name, tmp_output_path)
             print(command)
             ret = os.system(command)
-            if ret == 0:
-                os.remove(file_name)
+            if ret != 0:
+                continue
+            shutil.move(tmp_output_path, output_path)
+            os.remove(file_name)
+
         except:
             pass
 
